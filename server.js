@@ -8,7 +8,7 @@ const mongoDB = "mongodb+srv://root:root@cluster0.spmcifx.mongodb.net/ctse";
 
 // Connect to MongoDB
 mongoose
-  .connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(mongoDB)
   .then(() => console.log("MongoDB connection successful"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
@@ -30,4 +30,3 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
-
