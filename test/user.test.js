@@ -5,7 +5,7 @@ const User = require("../models/user.model");
 
 describe("User Routes", () => {
   beforeEach(async () => {
-    await User.deleteMany();
+    //await User.deleteMany();
   });
 
   afterAll(async () => {
