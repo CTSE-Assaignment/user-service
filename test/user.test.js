@@ -20,28 +20,27 @@ describe('User Routes', () => {
     });
 
     token = jwt.sign({ id: user2._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
   });
 
   afterAll(async () => {
     await mongoose.connection.close();
   });
 
-  describe('POST /signup', () => {
-    test('should create a new user', async () => {
+  describe("POST /signup", () => {
+    test("should create a new user", async () => {
       const newUser = {
-        name: 'Test User',
-        email: 'test@example.com',
-        phoneNumber: '1234567890',
-        nic: '123456789X',
-        password: 'password'
+        name: "Test User",
+        email: "test@example.com",
+        phoneNumber: "1234567890",
+        nic: "123456789X",
+        password: "password",
       };
 
-      const response = await request(app)
-        .post('/users/signup')
-        .send(newUser);
+      const response = await request(app).post("/users/signup").send(newUser);
 
       expect(response.statusCode).toBe(201);
-      expect(response.body.status).toBe('success');
+      expect(response.body.status).toBe("success");
       expect(response.body.data.user.email).toBe(newUser.email);
 
       // Check if user is saved in the database
@@ -51,28 +50,29 @@ describe('User Routes', () => {
     });
   });
 
+
   describe('POST /login', () => {
+
     beforeEach(async () => {
       await User.deleteMany();
       const newUser = {
-        name: 'Test User',
-        email: 'test@example.com',
-        phoneNumber: '1234567890',
-        nic: '123456789X',
-        password: 'password'
+        name: "Test User",
+        email: "test@example.com",
+        phoneNumber: "1234567890",
+        nic: "123456789X",
+        password: "password",
       };
       await User.create(newUser);
     });
 
-    test('should login an existing user', async () => {
+    test("should login an existing user", async () => {
       const response = await request(app)
-        .post('/users/login')
-        .send({ email: 'test@example.com', password: 'password' });
+        .post("/users/login")
+        .send({ email: "test@example.com", password: "password" });
 
       expect(response.statusCode).toBe(200);
-      expect(response.body.status).toBe('success');
-      expect(response.body.user.email).toBe('test@example.com');
+      expect(response.body.status).toBe("success");
+      expect(response.body.user.email).toBe("test@example.com");
     });
   });
-
 });
