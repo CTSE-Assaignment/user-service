@@ -1,11 +1,26 @@
-const request = require("supertest");
-const app = require("../server"); // Assuming your Express app is exported from server.js
-const mongoose = require("mongoose");
-const User = require("../models/user.model");
+const request = require('supertest');
+const app = require('../server');
+const mongoose = require('mongoose');
+const User = require('../models/user.model');
+const jwt = require('jsonwebtoken');
 
-describe("User Routes", () => {
-  beforeEach(async () => {
-    //await User.deleteMany();
+describe('User Routes', () => {
+  let user;
+  let token;
+  let user2;
+
+  beforeAll(async () => {
+    await User.deleteMany();
+    user2 = await User.create({
+      name: 'Dave Joe',
+      email: 'dave@example.com',
+      phoneNumber: '332222243434',
+      nic: 'ABC1223336',
+      password: 'passsdsws33ord123',
+    });
+
+    token = jwt.sign({ id: user2._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
   });
 
   afterAll(async () => {
@@ -35,9 +50,11 @@ describe("User Routes", () => {
     });
   });
 
-  describe("POST /login", () => {
-    // Create a user for login tests
+
+  describe('POST /login', () => {
+
     beforeEach(async () => {
+      await User.deleteMany();
       const newUser = {
         name: "Test User",
         email: "test@example.com",
